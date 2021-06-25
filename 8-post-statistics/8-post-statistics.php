@@ -97,7 +97,7 @@ if ( ! class_exists( 'PostStatistics' ) ) {
       </div>
     <?php }
 
-    // Data validation
+    // Data validation for display location field
     public function sanitize_location( $input ) {
       if ( $input != '0' && $input != '1' ) {
         add_settings_error( 'wpps_location', 'wpps_location_error', 'Display location must be either beginning or end.' );
@@ -112,7 +112,7 @@ if ( ! class_exists( 'PostStatistics' ) ) {
      * Apply this function if a) We're in the single post screen and b) One of the post statistics checkboxes has been checked
      */
     public function post_statistics_display( $content ) {
-      if ( ( is_main_query() && is_single() ) && (
+      if ( is_main_query() && is_single() && (
         get_option( 'wpps_wordcount', '1' ) ||
         get_option( 'wpps_charactercount', '1' ) ||
         get_option( 'wpps_readtime', '1' )
@@ -120,12 +120,34 @@ if ( ! class_exists( 'PostStatistics' ) ) {
         return $this->post_statistics_html( $content );
       }
 
-      return $content . ' No condition has been met!';
+      return $content;
     }
 
     // Echo html of display post statistics
     public function post_statistics_html( $content ) {
-      $html = 'Eman';
+      $html = '<h3>' . esc_html( get_option( 'wpps_headline', 'Post Statistics' ) ) . '</h3><p>';
+
+      $word_count = str_word_count( strip_tags( $content ) );
+      $character_count = strlen( strip_tags( $content ) );
+
+      if ( get_option( 'wpps_wordcount', '1' ) ) {
+        $html .= 'This post has ' . $word_count . ' words<br>';
+      }
+
+      if ( get_option( 'wpps_charactercount', '1' ) ) {
+        $html .= 'This post has ' . $character_count . ' characters.<br>';
+      }
+
+      // Average read time is 225 words/min
+      if ( get_option( 'wpps_readtime', '1' ) ) {
+        $html .= 'This post takes ' . round( $word_count / 225 ) . ' minute(s) to read.<br>';
+      }
+
+      $html .= '</p>';
+
+      if ( get_option( 'wpps_location', '0' ) == '0' ) {
+        return $html . $content;
+      }
 
       return $content . $html;
     }
