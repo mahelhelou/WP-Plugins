@@ -23,10 +23,10 @@ function example_admin_menu_page_options_display() {
     update_option( 'example_header_scripts', $_POST[ 'header_scripts' ] );
     update_option( 'example_footer_scripts', $_POST[ 'footer_scripts' ] ); ?>
 
-    <div id="updated settings-error notice is-dismissible">
-      <strong>Your options has been saved.</strong>
-    </div>
-  <?php }
+<div id="updated settings-error notice is-dismissible">
+  <strong>Your options has been saved.</strong>
+</div>
+<?php }
 
   // Get saved options
   $header_scripts = get_option( 'example_header_scripts', 'none' );
@@ -36,20 +36,20 @@ function example_admin_menu_page_options_display() {
 
 
 
-  <!-- Create an options form (Submit new options) -->
-  <div class="wrap">
-    <h2>Update Site Scripts (Header & Footer)</h2>
+<!-- Create an options form (Submit new options) -->
+<div class="wrap">
+  <h2>Update Site Scripts (Header & Footer)</h2>
 
-    <form method="post" action="">
-      <label for="header_scripts">Header Scripts</label>
-      <textarea name="header_scripts" id="header_scripts" class="large-text"><?php echo $header_scripts ?></textarea>
+  <form method="post" action="">
+    <label for="header_scripts">Header Scripts</label>
+    <textarea name="header_scripts" id="header_scripts" class="large-text"><?php echo $header_scripts ?></textarea>
 
-      <label for="footer_scripts">Footer Scripts</label>
-      <textarea name="footer_scripts" id="footer_scripts" class="large-text"><?php echo $footer_scripts ?></textarea>
+    <label for="footer_scripts">Footer Scripts</label>
+    <textarea name="footer_scripts" id="footer_scripts" class="large-text"><?php echo $footer_scripts ?></textarea>
 
-      <button name="update_options_submit" class="button button-primary">Update Scripts</button>
-    </form>
-  </div>
+    <button name="update_options_submit" class="button button-primary">Update Scripts</button>
+  </form>
+</div>
 
 <?php }
 
