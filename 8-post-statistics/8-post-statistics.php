@@ -7,6 +7,8 @@
  * Author URI: https://linkedin.com/in/mahelhelou
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 if ( ! class_exists( 'PostStatistics' ) ) {
   class PostStatistics {
     function __construct() {
@@ -16,11 +18,25 @@ if ( ! class_exists( 'PostStatistics' ) ) {
     }
 
     public function admin_page() {
+      /**
+       * Params
+       * Document title (Browser tab)
+       * Settings menu
+       * Capabilities the user should have to see this plugin
+       * Slug or short name
+       * Function to output the html for this page
+       */
       add_options_page( 'Post Statistics Settings', 'Post Statistics', 'manage_options', 'post-statistics-settings-page', [$this, 'admin_page_html'] );
     }
 
     public function settings() {
-      // Settings sections
+      /**
+       * Params
+       * Section name
+       * Section subtitle
+       * Section content
+       * Where to put this section?
+       */
       add_settings_section( 'wpps_first_section', NULL, NULL, 'post-statistics-settings-page' );
 
       /**
@@ -31,6 +47,15 @@ if ( ! class_exists( 'PostStatistics' ) ) {
 
       // Location field
       add_settings_field( 'wpps_location', 'Display Location', [$this, 'location_html'], 'post-statistics-settings-page', 'wpps_first_section' );
+
+      /**
+       * Params
+       * Settings group that belongs to
+       * Name in the DB
+       * Array of sanitization and default value
+       * I removed default WordPress sanitization function and used custom sanitization function
+       * The default WordPress sanitization failed because we can change and save Location field value from browsers tool, and it can be stored in DB -> inspect -> value="100"
+       */
       register_setting( 'wpps_options', 'wpps_location', ['sanitize_callback' => [$this, 'sanitize_location'], 'default' => '0'] );
 
       // Headline field
@@ -51,56 +76,69 @@ if ( ! class_exists( 'PostStatistics' ) ) {
     }
 
     // Callbacks
-    // Location field callback
-    public function location_html() {?>
-      <select name="wpps_location">
-        <option value="0" <?php selected( get_option( 'wpps_location' ), '0' ); ?>>Beginning of the post</option>
-        <option value="1" <?php selected( get_option( 'wpps_location' ), '1' ); ?>>End of the post</option>
-      </select>
-    <?php }
+    /**
+     * Location field callback
+     * selected() outputs the value if the DB value matches current selected value!
+     */
+    public function location_html() { ?>
+<select name="wpps_location">
+  <option value="0" <?php selected( get_option( 'wpps_location' ), '0' ); ?>>Beginning of the post</option>
+  <option value="1" <?php selected( get_option( 'wpps_location' ), '1' ); ?>>End of the post</option>
+</select>
+<?php }
 
     // Headline field callback
     public function headline_html() { ?>
-      <input type="text" name="wpps_headline" value="<?php echo esc_attr( get_option( 'wpps_headline' ) ); ?>">
-    <?php }
+<input type="text" name="wpps_headline" value="<?php echo esc_attr( get_option( 'wpps_headline' ) ); ?>">
+<?php }
 
     // Word count callback
     /* public function wordcount_html() { ?>
-      <input type="checkbox" name="wpps_wordcount" value="1" <?php esc_attr( checked( get_option( 'wpps_wordcount' ), '1' ) ); ?>>
-    <?php } */
+<input type="checkbox" name="wpps_wordcount" value="1"
+  <?php esc_attr( checked( get_option( 'wpps_wordcount' ), '1' ) ); ?>>
+<?php } */
 
     // Character count callback
     /* public function charactercount_html() { ?>
-      <input type="checkbox" name="wpps_charactercount" value="1" <?php esc_attr( checked( get_option( 'wpps_charactercount' ), '1' ) ); ?>>
-    <?php } */
+<input type="checkbox" name="wpps_charactercount" value="1"
+  <?php esc_attr( checked( get_option( 'wpps_charactercount' ), '1' ) ); ?>>
+<?php } */
 
     // Read time callback
     /* public function readtime_html() { ?>
-      <input type="checkbox" name="wpps_readtime" value="1" <?php esc_attr( checked( get_option( 'wpps_readtime' ), '1' ) ); ?>>
-    <?php } */
+<input type="checkbox" name="wpps_readtime" value="1"
+  <?php esc_attr( checked( get_option( 'wpps_readtime' ), '1' ) ); ?>>
+<?php } */
 
     public function checkbox_html( $args ) { ?>
-      <input type="checkbox" name="<?php echo $args['option_name'] ?>" value="1" <?php checked( get_option( $args['option_name'] ), '1' ) ?>>
-    <?php }
+<input type="checkbox" name="<?php echo $args['option_name'] ?>" value="1"
+  <?php checked( get_option( $args['option_name'] ), '1' ) ?>>
+<?php }
 
     // Admin page callback
     public function admin_page_html() { ?>
-      <div class="wrap">
-        <h1>Post Statistics Settings</h1>
-        <form action="options.php" method="POST">
-        <?php
-          settings_fields( 'wpps_options' );
-          do_settings_sections( 'post-statistics-settings-page' );
-          submit_button();
-        ?>
-        </form>
-      </div>
-    <?php }
+<div class="wrap">
+  <h1>Post Statistics Settings</h1>
+  <form action="options.php" method="POST">
+    <?php
+      settings_fields( 'wpps_options' );
+      do_settings_sections( 'post-statistics-settings-page' );
+      // submit_button(); // Save changes
+      submit_button( 'Update Settings' );
+    ?>
+  </form>
+</div>
+<?php }
 
-    // Data validation for display location field
+    /**
+     * Data validation for display location field
+     * To avoid unexpected value that can be set via browser devtools
+     * If the value is wrong, back to previous value
+     */
     public function sanitize_location( $input ) {
       if ( $input != '0' && $input != '1' ) {
-        add_settings_error( 'wpps_location', 'wpps_location_error', 'Display location must be either beginning or end.' );
+        add_settings_error( 'wpps_location', 'wpps_location_error', 'Display location must be either beginning or end of the post.' );
+
         return get_option( 'wpps_location' );
       }
 
@@ -125,22 +163,26 @@ if ( ! class_exists( 'PostStatistics' ) ) {
 
     // Echo html of display post statistics
     public function post_statistics_html( $content ) {
-      $html = '<h3>' . esc_html( get_option( 'wpps_headline', 'Post Statistics' ) ) . '</h3><p>';
+      $html = '<h3>' . esc_html( get_option( 'wpps_headline', 'Post Statistics' ) ) . '</h3>';
+      $html .= '<p>';
 
       $word_count = str_word_count( strip_tags( $content ) );
       $character_count = strlen( strip_tags( $content ) );
 
       if ( get_option( 'wpps_wordcount', '1' ) ) {
-        $html .= 'This post has ' . $word_count . ' words<br>';
+        // $html .= 'This post has ' . $word_count . ' words<br>';
+        $html .= $word_count . ' words, ';
       }
 
       if ( get_option( 'wpps_charactercount', '1' ) ) {
-        $html .= 'This post has ' . $character_count . ' characters.<br>';
+        // $html .= 'This post has ' . $character_count . ' characters.<br>';
+        $html .= $character_count . ' characters.';
       }
 
       // Average read time is 225 words/min
       if ( get_option( 'wpps_readtime', '1' ) ) {
-        $html .= 'This post takes ' . round( $word_count / 225 ) . ' minute(s) to read.<br>';
+        // $html .= 'This post takes ' . round( $word_count / 225 ) . ' minute(s) to read.<br>';
+        $html .= round( $word_count / 225 ) . ' min(s)';
       }
 
       $html .= '</p>';
