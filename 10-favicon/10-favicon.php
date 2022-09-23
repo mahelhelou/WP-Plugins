@@ -4,6 +4,8 @@
   Version: 1.0
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 if ( ! class_exists( 'SiteFavicon' ) ) {
   class SiteFavicon {
 

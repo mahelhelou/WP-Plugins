@@ -1,8 +1,9 @@
-<?php // Admin Menu Page Plugin
+<?php
+/*
+Plugin Name: 2. Admin Menu Page
+*/
 
-/**
- * Plugin Name: 2. Admin Menu Page
- */
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 function example_admin_menu_page_options_create() {
   add_menu_page(
@@ -33,8 +34,6 @@ function example_admin_menu_page_options_display() {
   $footer_scripts = get_option( 'example_footer_scripts', 'none' );
 
 ?>
-
-
 
 <!-- Create an options form (Submit new options) -->
 <div class="wrap">

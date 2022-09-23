@@ -1,17 +1,16 @@
 <?php // Easy Tutorials Plugin
 
-/**
- * Plugin Name: 6. Easy Tutorials
- */
+/*
+Plugin Name: 6. Easy Tutorials
+*/
 
-// Add plugin security
-defined( 'ABSPATH' ) or die( 'Hey, ary you trying to hack our website? Please don\'t to that!' );
+if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'Easy_Tutorials' ) ) {
-  class Easy_Tutorial {
+if ( ! class_exists( 'EasyTutorial' ) ) {
+  class EasyTutorial {
 
     function __construct() {
-      add_action( 'init', [ $this, 'custom_post_type' ] ); // Go to search in $this class, and find the method of 'custom_post_type'
+      add_action( 'init', [$this, 'custom_post_type'] ); // Go to search in $this class, and find the method of 'custom_post_type'
     }
 
     /**
@@ -51,8 +50,8 @@ if ( ! class_exists( 'Easy_Tutorials' ) ) {
   }
 }
 
-$easy_tutorial = new Easy_Tutorial;
-$easy_tutorial->register_admin_scripts();
+$easyTutorial = new EasyTutorial();
+$easyTutorial->register_admin_scripts();
 
-register_activation_hook( __FILE__, [ $easy_tutorial, 'activation' ] );
-register_deactivation_hook( __FILE__, [ $easy_tutorial, 'deactivation' ] );
+register_activation_hook( __FILE__, [ $easyTutorial, 'activation' ] );
+register_deactivation_hook( __FILE__, [ $easyTutorial, 'deactivation' ] );

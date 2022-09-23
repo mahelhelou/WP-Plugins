@@ -1,8 +1,9 @@
-<?php // Thank You Contact Form
+<?php
+/*
+Plugin Name: 3. Thank You Contact Form - Shortcode
+*/
 
-/**
- * Plugin Name: 3. Thank You Contact Form - Shortcode
- */
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 function thank_you_contact_form() {
   $content = '';

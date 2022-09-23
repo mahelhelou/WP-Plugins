@@ -1,21 +1,10 @@
 <?php
-/**
- * Plugin Name: 9. REST API Demo Plugin
- * Plugin URI: https://linkedin.com/learning
- * Description:Plugin to add fields to the REST API
- * Version: 1.0.0
- * Requires at least: 4.7
- * Author: Morten Rand-Hendriksen
- * Author URI: https://lnkd.in/mor10
- * License: GPL v2 or later
- * License URI:https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: rest-demo-plugin
- */
+/*
+Plugin Name: 9. REST API Demo Plugin
+Version: 1.0.0
+*/
 
-/**
- * Add new fields to the REST API response.
- * @link https://developer.wordpress.org/reference/functions/register_rest_field/
- */
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 add_action( 'rest_api_init', 'RDP_add_new_fields' );
 

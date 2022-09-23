@@ -3,6 +3,8 @@
   Plugin Name: 11. Email Page Link
  */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 if ( ! class_exists( 'EmailPageLink' ) ) {
 	class EmailPageLink {
 		function __construct() {

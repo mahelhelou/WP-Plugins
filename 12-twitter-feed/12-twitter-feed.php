@@ -4,6 +4,8 @@
 Plugin Name: 12. Twitter Feed
 */
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 if ( ! class_exists( 'TwitterFeed' ) ) {
   class TwitterFeed {
 		function __construct() {

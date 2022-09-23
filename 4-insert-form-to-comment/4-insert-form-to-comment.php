@@ -1,8 +1,7 @@
-<?php // Insert Submitted From Into Comment
-
-/**
- * Plugin Name: 4. Insert Form into Comment
- */
+<?php
+/*
+Plugin Name: 4. Insert Form into Comment
+*/
 
 function thank_you_contact_form() {
   $content = '';
