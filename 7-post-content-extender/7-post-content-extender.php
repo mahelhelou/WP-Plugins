@@ -3,7 +3,7 @@
 /*
 Plugin Name: 7. Post Name Extender
 Description: A really simple plugin to add text at the end of the post
-Author: Mahmoud El Helou
+Author: Mahmoud Elhelou
 Author URI: https://linkedin.com/in/mahelhelou
 */
 

@@ -5,7 +5,7 @@ Plugin Name: 5. Admin Dashboard Widgets
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exits( 'AdminWidgets' ) ) {
+if ( ! class_exists( 'AdminWidgets' ) ) {
   class AdminWidgets {
     function __construct() {
       add_action( 'wp_dashboard_setup', [$this, 'admin_dashboard_widgets'] );

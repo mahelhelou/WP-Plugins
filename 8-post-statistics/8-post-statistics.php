@@ -3,7 +3,7 @@
 /**
  * Plugin Name: 8. Post Statistics
  * Description: A simple plugin that shows the post statistics
- * Author: Mahmoud El Helou
+ * Author: Mahmoud Elhelou
  * Author URI: https://linkedin.com/in/mahelhelou
  */
 
